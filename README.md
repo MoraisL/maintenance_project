@@ -1,5 +1,5 @@
 
-# 🚀 Fullstack Application - Maintenance & Dashboard System
+# 🚀 Fullstack Application - Maintenance System
 
 Bem-vindo ao repositório da aplicação Fullstack que gerencia máquinas, manutenções, equipes e peças, integrando dashboards para visualização de dados. Esta aplicação utiliza **Django** no backend, **React Native** e **React** no frontend, proporcionando uma experiência fluida e moderna.
 
