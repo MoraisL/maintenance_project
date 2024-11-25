@@ -1,0 +1,20 @@
+# Base image
+FROM node:18
+
+# Diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copiar as dependências do projeto
+COPY package.json package-lock.json ./
+
+# Instalar dependências do Node.js
+RUN npm install
+
+# Copiar o restante do código para o container
+COPY . .
+
+# Expor a porta que o React usará
+EXPOSE 3000
+
+# Comando para iniciar o servidor de desenvolvimento do React
+CMD ["npm", "start"]
