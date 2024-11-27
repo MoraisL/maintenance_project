@@ -18,6 +18,7 @@ export default function FormEquipes() {
   const [memberName, setMemberName] = useState<string>(""); // Nome do membro atual
   const [memberRole, setMemberRole] = useState<string>(""); // Função do membro atual
   const [availability, setAvailability] = useState<"disponivel" | "indisponivel">("disponivel"); // Disponibilidade da equipe atual
+  const [teamToDelete, setTeamToDelete] = useState<Team | null>(null); // Equipe a ser excluída
 
   // Adicionar membro à lista
   const addMember = () => {
@@ -53,8 +54,21 @@ export default function FormEquipes() {
   };
 
   // Excluir equipe
-  const deleteTeam = (index: number) => {
-    setTeams((prevTeams) => prevTeams.filter((_, i) => i !== index));
+  const deleteTeam = () => {
+    if (teamToDelete) {
+      setTeams((prevTeams) => prevTeams.filter((team) => team !== teamToDelete));
+      setTeamToDelete(null); // Fecha o modal
+    }
+  };
+
+  // Alternar disponibilidade da equipe
+  const toggleAvailability = (teamIndex: number) => {
+    const updatedTeams = [...teams];
+    updatedTeams[teamIndex].availability =
+      updatedTeams[teamIndex].availability === "disponivel"
+        ? "indisponivel"
+        : "disponivel";
+    setTeams(updatedTeams);
   };
 
   // Atualizar membro em uma equipe
@@ -167,15 +181,16 @@ export default function FormEquipes() {
           <div key={teamIndex} className="border rounded-lg p-4 mb-4">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-bold">{team.name}</h3>
-              <span
+              <button
+                onClick={() => toggleAvailability(teamIndex)}
                 className={`px-3 py-1 rounded-full text-white text-sm ${
                   team.availability === "disponivel" ? "bg-green-500" : "bg-red-500"
                 }`}
               >
                 {team.availability === "disponivel" ? "Disponível" : "Indisponível"}
-              </span>
+              </button>
               <button
-                onClick={() => deleteTeam(teamIndex)}
+                onClick={() => setTeamToDelete(team)}
                 className="text-red-500 hover:underline"
               >
                 Excluir
@@ -202,6 +217,30 @@ export default function FormEquipes() {
           </div>
         ))}
       </div>
+
+      {/* Modal de Confirmação para Exclusão */}
+      {teamToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-bold mb-4">Confirmação de Exclusão</h2>
+            <p>Tem certeza que deseja excluir a equipe "{teamToDelete.name}"?</p>
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                onClick={() => setTeamToDelete(null)}
+                className="py-2 px-4 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={deleteTeam}
+                className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
