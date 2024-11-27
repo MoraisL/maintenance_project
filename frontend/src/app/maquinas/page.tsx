@@ -1,11 +1,11 @@
 "use client"
-import { Footer } from "../components/footer";
-import Forms from "../components/form_maquina";
-import { Aside } from "../components/aside";
-import Title from "../components/title";
+import { Footer } from "../components/Footer";
+import Forms from "../components/FormMaquina";
+import { Aside } from "../components/Aside";
+import Title from "../components/Title";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import FormsMaquinas from "../components/form_maquina";
+import FormsMaquinas from "../components/FormMaquina";
 
 export default function Home() {
 

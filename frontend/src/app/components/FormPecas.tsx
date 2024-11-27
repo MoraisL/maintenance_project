@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Card } from './card';
+import { Card } from './Card';
 
 interface Registro {
   tipo: 'entrada' | 'saida';

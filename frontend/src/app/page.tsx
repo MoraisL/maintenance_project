@@ -3,13 +3,13 @@ import { FaBuilding, FaTools, FaUsers } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 import { IoMdCheckbox, IoMdCheckboxOutline } from "react-icons/io";
 import { MdDashboard, MdForklift } from "react-icons/md";
-import { Footer } from "./components/footer";
-import { Aside } from "./components/aside";
-import { Card } from "./components/card";
-import { Table } from "./components/table";
-import { BarChartHero } from "./components/bar_charts";
-import Title from "./components/title";
-import FormsMaquinas from "./components/form_maquina";
+import { Footer } from "./components/Footer";
+import { Aside } from "./components/Aside";
+import { Card } from "./components/Card";
+import { Table } from "./components/Table";
+import { BarChartHero } from "./components/BarCharts";
+import Title from "./components/Title";
+import FormsMaquinas from "./components/FormMaquina";
 
 export default function Home() {
   return (
