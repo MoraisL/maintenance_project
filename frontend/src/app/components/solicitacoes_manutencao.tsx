@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface Solicitacao {
   descricao: string;
@@ -17,20 +17,21 @@ interface Solicitacao {
 export default function FormsSolicitacoes() {
   const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
   const [status, setStatus] = useState("pendente");
+  const [solicitacaoParaExcluir, setSolicitacaoParaExcluir] = useState<Solicitacao | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const novaSolicitacao: Solicitacao = {
-      descricao: formData.get('descricao') as string,
-      data_solicitacao: formData.get('data_solicitacao') as string,
-      prioridade: formData.get('prioridade') as string,
-      responsavel: formData.get('responsavel') as string,
+      descricao: formData.get("descricao") as string,
+      data_solicitacao: formData.get("data_solicitacao") as string,
+      prioridade: formData.get("prioridade") as string,
+      responsavel: formData.get("responsavel") as string,
       status: status,
-      comentarios: formData.get('comentarios') as string,
-      arquivos: formData.getAll('arquivos') as File[],
-      equipe: formData.get('equipe') as string,
+      comentarios: formData.get("comentarios") as string,
+      arquivos: formData.getAll("arquivos") as File[],
+      equipe: formData.get("equipe") as string,
       pecas_materiais: [],
     };
 
@@ -42,6 +43,13 @@ export default function FormsSolicitacoes() {
     const updatedSolicitacoes = [...solicitacoes];
     updatedSolicitacoes[index].status = e.target.value;
     setSolicitacoes(updatedSolicitacoes);
+  };
+
+  const excluirSolicitacao = () => {
+    if (solicitacaoParaExcluir) {
+      setSolicitacoes(solicitacoes.filter((s) => s !== solicitacaoParaExcluir));
+      setSolicitacaoParaExcluir(null); // Fecha o pop-up
+    }
   };
 
   return (
@@ -96,15 +104,19 @@ export default function FormsSolicitacoes() {
       <div className="mt-10">
         <h2 className="text-xl font-bold mb-4">Solicitações de Manutenção</h2>
         {solicitacoes.map((solicitacao, index) => (
-          <div key={index} className="mb-4 p-4 bg-gray-100 rounded-lg shadow-md">
+          <div
+            key={index}
+            className="relative mb-4 p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200"
+          >
             <h3 className="text-lg font-semibold">Problema: {solicitacao.descricao}</h3>
             <p>Data da Solicitação: {solicitacao.data_solicitacao}</p>
             <p>Prioridade: {solicitacao.prioridade}</p>
             <p>Responsável: {solicitacao.responsavel}</p>
-            <p>Status: 
-              <select 
-                value={solicitacao.status} 
-                onChange={(e) => handleStatusChange(e, index)} 
+            <p>
+              Status:
+              <select
+                value={solicitacao.status}
+                onChange={(e) => handleStatusChange(e, index)}
                 className="ml-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               >
                 <option value="pendente">Pendente</option>
@@ -127,12 +139,43 @@ export default function FormsSolicitacoes() {
                 </ul>
               </details>
             )}
-            {solicitacao.equipe && (
-              <p>Equipe: {solicitacao.equipe}</p>
-            )}
+            {solicitacao.equipe && <p>Equipe: {solicitacao.equipe}</p>}
+            <button
+              onClick={() => setSolicitacaoParaExcluir(solicitacao)}
+              className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+            >
+              X
+            </button>
           </div>
         ))}
       </div>
+
+      {/* Confirmation modal for deletion */}
+      {solicitacaoParaExcluir && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-bold mb-4">Confirmação de Exclusão</h2>
+            <p>
+              Tem certeza que deseja excluir a solicitação de manutenção: "
+              {solicitacaoParaExcluir.descricao}"?
+            </p>
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                onClick={() => setSolicitacaoParaExcluir(null)}
+                className="py-2 px-4 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={excluirSolicitacao}
+                className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
