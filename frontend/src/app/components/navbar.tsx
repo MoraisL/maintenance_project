@@ -1,5 +1,6 @@
-import { FaBuilding, FaTools, FaUsers } from "react-icons/fa";
-import { MdDashboard, MdForklift } from "react-icons/md";
+import Link from 'next/link';
+import { FaBuilding, FaTools, FaUsers } from 'react-icons/fa';
+import { MdDashboard, MdForklift } from 'react-icons/md';
 
 /**
  * Componente NavBar
@@ -18,43 +19,20 @@ import { MdDashboard, MdForklift } from "react-icons/md";
  */
 
 export function NavBar() {
-  // Definição dos links da barra de navegação
   const links = [
-    {
-      target: "./maquinas", // Caminho do link
-      text: "Gerenciamento de máquinas", // Texto descritivo
-      icon: <MdDashboard /> // Ícone representativo
-    },
-    {
-      target: "./manutencoes",
-      text: "Gerenciamento de manutenções",
-      icon: <FaBuilding />
-    },
-    {
-      target: "./pecas",
-      text: "Controle de Estoque de Peças",
-      icon: <MdForklift />
-    },
-    {
-      target: "./equipes",
-      text: "Gerenciamento de Equipes",
-      icon: <FaTools />
-    }
+    { target: '/maquinas', text: 'Gerenciamento de máquinas', icon: <MdDashboard /> },
+    { target: '/manutencoes', text: 'Gerenciamento de manutenções', icon: <FaBuilding /> },
+    { target: '/pecas', text: 'Controle de Estoque de Peças', icon: <MdForklift /> },
+    { target: '/equipes', text: 'Gerenciamento de Equipes', icon: <FaTools /> },
   ];
 
   return (
-    // Contêiner principal da barra de navegação
     <nav className="space-y-4 flex flex-col mt-8">
       {links.map((obj, index) => (
-        // Cada link da barra de navegação
-        <a
-          href={obj.target} // Caminho do link
-          key={index} // Chave única para cada item
-          className="flex items-center gap-4 hover:font-semibold"
-        >
-          {obj.icon} {/* Ícone do link */}
-          {obj.text} {/* Texto do link */}
-        </a>
+        <Link href={obj.target} key={index} className="flex items-center gap-4 hover:font-semibold">
+          {obj.icon}
+          {obj.text}
+        </Link>
       ))}
     </nav>
   );
