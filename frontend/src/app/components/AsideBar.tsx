@@ -6,7 +6,7 @@ import { FaBuilding, FaTools, FaUsers } from "react-icons/fa";
 import { MdDashboard, MdForklift } from "react-icons/md";
 
 // Importa o componente de navegação
-import { NavBar } from "./navbar";
+import { NavBar } from "./NavBar";
 
 /**
  * Componente Aside
