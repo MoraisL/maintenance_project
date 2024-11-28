@@ -1,11 +1,11 @@
 "use client"
-import { Footer } from "../components/PageFooter";
-import FormsSolicitacoes from "../components/FormManutencao";
-import { Aside } from "../components/AsideBar";
-import Title from "../components/TitleComponent";
+import { Footer } from "../../components/PageFooter";
+import FormsSolicitacoes from "../../components/FormManutencao";
+import { Aside } from "../../components/AsideBar";
+import Title from "../../components/TitleComponent";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SolicitacaoManutencao from "../components/SolicitacoesManutencao"; 
+import SolicitacaoManutencao from "../../components/SolicitacoesManutencao"; 
 
 export default function Home() {
     return (

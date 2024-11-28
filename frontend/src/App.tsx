@@ -2,11 +2,11 @@
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { NavBar } from "./app/components/NavBar";
-import FormEquipes from "./app/components/FormEquipes";
-import FormsCadastro from "./app/components/FormPecas";
-import FormsMaquinas from "./app/components/FormMaquina";
-import FormsSolicitacaoManutencao from "./app/components/FormManutencao";
+import { NavBar } from "./components/NavBar";
+import FormEquipes from "./components/FormEquipes";
+import FormsCadastro from "./components/FormPecas";
+import FormsMaquinas from "./components/FormMaquina";
+import FormsSolicitacaoManutencao from "./components/FormManutencao";
 
 export default function App() {
   return (
