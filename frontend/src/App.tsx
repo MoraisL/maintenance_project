@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { NavBar } from "./app/components/navbar";
+import { NavBar } from "./app/components/NavBar";
 import FormEquipes from "./app/components/FormEquipes";
 import FormsCadastro from "./app/components/FormPecas";
 import FormsMaquinas from "./app/components/FormMaquina";
