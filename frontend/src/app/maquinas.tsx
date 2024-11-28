@@ -1,6 +1,6 @@
-import { Footer } from "./components/Footer";
-import { Aside } from "./components/Aside";
-import Title from "./components/Title";
+import { Footer } from "./components/PageFooter";
+import { Aside } from "./components/AsideBar";
+import Title from "./components/TitleComponent";
 
 export default function Home(){
     return (
