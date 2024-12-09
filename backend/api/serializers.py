@@ -1,6 +1,16 @@
 from rest_framework import serializers
 from .models import Machine, Maintenance, Team, Part, UsedPart, Profile
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer): # Para customizar o token (opcional)
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['username'] = user.username  # Adiciona o username ao token
+        return token
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
