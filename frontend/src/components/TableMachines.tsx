@@ -1,6 +1,22 @@
 import { LuTrash } from "react-icons/lu";
 import { MdEditNote } from "react-icons/md";
 
+/**
+ * Componente Table
+ *
+ * Este componente é responsável por renderizar uma tabela de dados estática com informações
+ * sobre ambientes, equipamentos, solicitações e datas de atendimento. Ele inclui ações para
+ * edição e exclusão de cada linha.
+ *
+ * Funcionalidades:
+ * - Exibição de dados em formato tabular.
+ * - Ações associadas a cada linha (ícones de edição e exclusão).
+ *
+ * Estrutura:
+ * - Cabeçalho da tabela com colunas: Ambiente, Equipamento, Solicitação, Atendido em, Ações.
+ * - Corpo da tabela preenchido com dados simulados (mocked data).
+ * - Ícones de ações (edição e exclusão) para cada linha.
+ */
 export function Table(){
 return (
   <div className="overflow-x-auto">

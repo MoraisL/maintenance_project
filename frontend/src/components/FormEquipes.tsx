@@ -1,24 +1,44 @@
 import React, { useState } from "react";
 
+/**
+ * Interfaces para definição da estrutura de dados.
+ */
 interface Member {
-  name: string;
-  role: string;
+  name: string; // Nome do membro
+  role: string; // Função do membro
 }
 
 interface Team {
-  name: string;
-  members: Member[];
-  availability: "disponivel" | "indisponivel";
+  name: string; // Nome da equipe
+  members: Member[]; // Lista de membros da equipe
+  availability: "disponivel" | "indisponivel"; // Disponibilidade da equipe
 }
 
+/**
+ * Componente FormEquipes
+ *
+ * Este componente fornece um formulário para gerenciamento de equipes e colaboradores.
+ * Ele permite:
+ * - Criar equipes com membros.
+ * - Editar as informações das equipes.
+ * - Alternar disponibilidade das equipes.
+ * - Excluir equipes.
+ *
+ * Funcionalidades principais:
+ * - Gerenciar a lista de equipes com suas respectivas propriedades.
+ * - Adicionar, editar e remover membros em uma equipe.
+ * - Alternar entre "disponível" e "indisponível" para equipes.
+ * - Excluir equipes com uma confirmação.
+ */
 export default function FormEquipes() {
+  // Estados para gerenciar dados dinâmicos
   const [teams, setTeams] = useState<Team[]>([]); // Lista de equipes
   const [teamName, setTeamName] = useState<string>(""); // Nome da equipe atual
   const [members, setMembers] = useState<Member[]>([]); // Lista de membros da equipe atual
   const [memberName, setMemberName] = useState<string>(""); // Nome do membro atual
   const [memberRole, setMemberRole] = useState<string>(""); // Função do membro atual
-  const [availability, setAvailability] = useState<"disponivel" | "indisponivel">("disponivel"); // Disponibilidade da equipe atual
-  const [teamToDelete, setTeamToDelete] = useState<Team | null>(null); // Equipe a ser excluída
+  const [availability, setAvailability] = useState<"disponivel" | "indisponivel">("disponivel"); // Disponibilidade da equipe
+  const [teamToDelete, setTeamToDelete] = useState<Team | null>(null); // Equipe selecionada para exclusão
 
   // Adicionar membro à lista
   const addMember = () => {

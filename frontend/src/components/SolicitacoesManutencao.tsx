@@ -2,17 +2,32 @@
 
 import React, { useState } from "react";
 
+/**
+ * Interface Solicitacao
+ * Representa os dados de uma solicitação de manutenção.
+ */
 interface Solicitacao {
-  descricao: string;
-  data_solicitacao: string;
-  prioridade: string;
-  responsavel: string;
-  status: string;
-  comentarios?: string;
-  arquivos?: File[];
-  equipe?: string;
-  pecas_materiais?: { item: string; quantidade: number; fornecedor: string }[];
+  descricao: string; // Descrição do problema
+  data_solicitacao: string; // Data em que a solicitação foi feita
+  prioridade: string; // Prioridade da solicitação (baixa, média, alta, crítica)
+  responsavel: string; // Nome do responsável pela solicitação
+  status: string; // Status atual da solicitação
+  comentarios?: string; // Comentários adicionais (opcional)
+  arquivos?: File[]; // Arquivos relacionados à solicitação (opcional)
+  equipe?: string; // Equipe de manutenção atribuída (opcional)
+  pecas_materiais?: { item: string; quantidade: number; fornecedor: string }[]; // Lista de peças/materiais (opcional)
 }
+
+/**
+ * Componente FormsSolicitacoes
+ *
+ * Este componente permite cadastrar, visualizar, atualizar e excluir solicitações de manutenção.
+ *
+ * Funcionalidades:
+ * - Cadastro de solicitações, com campos para descrição, data, prioridade, responsável, status e mais.
+ * - Exibição de uma lista de solicitações cadastradas, incluindo detalhes e interatividade para edição.
+ * - Exclusão de solicitações com confirmação através de um modal.
+ */
 
 export default function FormsSolicitacoes() {
   const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
