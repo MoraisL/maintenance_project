@@ -13,9 +13,6 @@ export function Aside() {
     // Remove os tokens do localStorage
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-
-    // Redireciona para a página de login
-    router.push("/login");
   };
 
   return (

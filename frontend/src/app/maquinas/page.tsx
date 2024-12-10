@@ -1,6 +1,7 @@
 "use client"
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useRouter } from "next/navigation"; 
 import { Footer } from "../../components/PageFooter";
 import Forms from "../../components/FormMaquina";
@@ -16,10 +17,10 @@ export default function Home() {
   
     useEffect(() => {
       const checkAuth = () => {
-        const cookies = document.cookie.split("; ");
-        const hasAccessToken = cookies.some((cookie) => cookie.startsWith("access_token="));
-        
-        if (!hasAccessToken) {
+        // Verifica se os tokens estão no localStorage
+        const accessToken = localStorage.getItem("access_token");
+    
+        if (!accessToken) {
           // Se não autenticado, redirecione para login
           router.push("/login");
         } else {
@@ -27,7 +28,7 @@ export default function Home() {
           setIsAuthenticated(true);
         }
       };
-  
+    
       checkAuth();
     }, [router]);
   

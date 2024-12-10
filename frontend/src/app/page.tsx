@@ -1,3 +1,7 @@
+"use client"
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; 
+
 import Image from "next/image";
 import { FaBuilding, FaTools, FaUsers } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
@@ -11,7 +15,34 @@ import { BarChartHero } from "../components/BarCharts";
 import Title from "../components/TitleComponent";
 import FormsMaquinas from "../components/FormMaquina";
 
+
 export default function Home() {
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = () => {
+      // Verifica se os tokens estão no localStorage
+      const accessToken = localStorage.getItem("access_token");
+  
+      if (!accessToken) {
+        // Se não autenticado, redirecione para login
+        router.push("/login");
+      } else {
+        // Se autenticado, atualize o estado
+        setIsAuthenticated(true);
+      }
+    };
+  
+    checkAuth();
+  }, [router]);
+
+  // Evita renderizar a página enquanto a autenticação está sendo verificada
+  if (!isAuthenticated) {
+    return null; // Pode ser um spinner ou algo indicando que está carregando
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-1 overflow-hidden">
