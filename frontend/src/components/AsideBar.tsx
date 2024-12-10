@@ -10,9 +10,10 @@ export function Aside() {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Remove os tokens do localStorage
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+
+    window.location.reload();
   };
 
   return (

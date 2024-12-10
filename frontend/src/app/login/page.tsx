@@ -14,12 +14,12 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (!formData.username || !formData.password) {
       alert("Por favor, preencha todos os campos.");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:8000/token/", {
         method: "POST",
@@ -28,19 +28,19 @@ export default function Login() {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         throw new Error("Credenciais inválidas");
       }
-  
+
       const data = await response.json();
-  
-      // Salva o token como um cookie
-      document.cookie = `access_token=${data.access}; path=/; secure`;
-      document.cookie = `refresh_token=${data.refresh}; path=/; secure`;
-  
+
+      // Salva os tokens no localStorage
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+
       alert("Login bem-sucedido!");
-      router.push("/maquinas");
+      router.push("/maquinas"); // Redireciona para a página principal após o login
     } catch (error) {
       alert(error);
     }
