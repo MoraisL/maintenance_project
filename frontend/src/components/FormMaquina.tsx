@@ -14,8 +14,12 @@ interface Maquina {
 
 export default function FormsMaquinas() {
   const [maquinas, setMaquinas] = useState<Maquina[]>([]);
-  const [maquinaSelecionada, setMaquinaSelecionada] = useState<Maquina | null>(null);
-  const [maquinaParaExcluir, setMaquinaParaExcluir] = useState<Maquina | null>(null);
+  const [maquinaSelecionada, setMaquinaSelecionada] = useState<Maquina | null>(
+    null
+  );
+  const [maquinaParaExcluir, setMaquinaParaExcluir] = useState<Maquina | null>(
+    null
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +51,10 @@ export default function FormsMaquinas() {
       <h1 className="text-2xl font-bold mb-6">Cadastro de Máquinas</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="nome"
+            className="block text-sm font-medium text-gray-700"
+          >
             Nome:
           </label>
           <input
@@ -56,12 +63,15 @@ export default function FormsMaquinas() {
             name="nome"
             placeholder="Nome da máquina"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         {/* Outros campos do formulário */}
         <div className="mb-4">
-          <label htmlFor="tipo" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="tipo"
+            className="block text-sm font-medium text-gray-700"
+          >
             Tipo:
           </label>
           <input
@@ -70,11 +80,14 @@ export default function FormsMaquinas() {
             name="tipo"
             placeholder="Tipo da máquina"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="modelo" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="modelo"
+            className="block text-sm font-medium text-gray-700"
+          >
             Modelo:
           </label>
           <input
@@ -83,11 +96,14 @@ export default function FormsMaquinas() {
             name="modelo"
             placeholder="Modelo da máquina"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="data_fabricacao" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="data_fabricacao"
+            className="block text-sm font-medium text-gray-700"
+          >
             Data de Fabricação:
           </label>
           <input
@@ -95,11 +111,14 @@ export default function FormsMaquinas() {
             id="data_fabricacao"
             name="data_fabricacao"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="numero_serie" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="numero_serie"
+            className="block text-sm font-medium text-gray-700"
+          >
             Número de Série:
           </label>
           <input
@@ -108,11 +127,14 @@ export default function FormsMaquinas() {
             name="numero_serie"
             placeholder="Número de série"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="localizacao" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="localizacao"
+            className="block text-sm font-medium text-gray-700"
+          >
             Localização:
           </label>
           <input
@@ -121,11 +143,14 @@ export default function FormsMaquinas() {
             name="localizacao"
             placeholder="Localização"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="manutencao" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="manutencao"
+            className="block text-sm font-medium text-gray-700"
+          >
             Histórico de Manutenção:
           </label>
           <textarea
@@ -133,7 +158,7 @@ export default function FormsMaquinas() {
             name="manutencao"
             placeholder="Histórico de manutenção"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <button
@@ -151,7 +176,10 @@ export default function FormsMaquinas() {
             key={index}
             className="relative mb-4 p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200"
           >
-            <h3 className="text-lg font-semibold cursor-pointer" onClick={() => setMaquinaSelecionada(maquina)}>
+            <h3
+              className="text-lg font-semibold cursor-pointer"
+              onClick={() => setMaquinaSelecionada(maquina)}
+            >
               {maquina.nome}
             </h3>
             <button
@@ -178,16 +206,19 @@ export default function FormsMaquinas() {
               <strong>Modelo:</strong> {maquinaSelecionada.modelo}
             </p>
             <p>
-              <strong>Data de Fabricação:</strong> {maquinaSelecionada.data_fabricacao}
+              <strong>Data de Fabricação:</strong>{" "}
+              {maquinaSelecionada.data_fabricacao}
             </p>
             <p>
-              <strong>Número de Série:</strong> {maquinaSelecionada.numero_serie}
+              <strong>Número de Série:</strong>{" "}
+              {maquinaSelecionada.numero_serie}
             </p>
             <p>
               <strong>Localização:</strong> {maquinaSelecionada.localizacao}
             </p>
             <p>
-              <strong>Histórico de Manutenção:</strong> {maquinaSelecionada.manutencao}
+              <strong>Histórico de Manutenção:</strong>{" "}
+              {maquinaSelecionada.manutencao}
             </p>
             <button
               onClick={() => setMaquinaSelecionada(null)}
@@ -203,7 +234,10 @@ export default function FormsMaquinas() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h2 className="text-lg font-bold mb-4">Confirmação de Exclusão</h2>
-            <p>Tem certeza que deseja excluir a máquina "{maquinaParaExcluir.nome}"?</p>
+            <p>
+              Tem certeza que deseja excluir a máquina "
+              {maquinaParaExcluir.nome}"?
+            </p>
             <div className="mt-4 flex justify-end space-x-4">
               <button
                 onClick={() => setMaquinaParaExcluir(null)}

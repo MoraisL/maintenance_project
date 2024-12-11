@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Machine, Maintenance, Team, Part, UsedPart, Profile
-from .serializers import MachineSerializer, MaintenanceSerializer, TeamSerializer, PartSerializer, UsedPartSerializer, ProfileSerializer, MyTokenObtainPairSerializer
+from .serializers import MachineSerializer, MaintenanceSerializer, TeamSerializer, PartSerializer, UsedPartSerializer, ProfileSerializer, MyTokenObtainPairSerializer, UserSerializer
 
 class RegisterUserView(APIView):
     permission_classes = [AllowAny]
@@ -39,15 +39,10 @@ class MachineViewSet(viewsets.ModelViewSet):
 class MaintenanceViewSet(viewsets.ModelViewSet):
     queryset = Maintenance.objects.all()
     serializer_class = MaintenanceSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    def get_queryset(self):  # Somente manutenções do usuário logado ou todos se for superuser
-        if self.request.user.is_superuser:
-            return Maintenance.objects.all()
-        return Maintenance.objects.filter(user=self.request.user)
+        # Certifique-se de que o campo 'user' seja passado corretamente ao criar a instância
+        serializer.save(user=self.request.user)  # Usando o usuário autenticado como responsável
 
 
 
@@ -76,3 +71,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Profile.objects.filter(user=self.request.user) # Somente o perfil do usuário logado
+    
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]

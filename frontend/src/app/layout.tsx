@@ -16,7 +16,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-zinc-400">{children}</body>
+      <body className="bg-gradient-to-r from-blue-500 to-zinc-400 text-white min-h-screen flex flex-col">
+        <header className="bg-blue-700 p-4 shadow-md">
+          <h1 className="text-center text-xl font-bold">Maintenance APP</h1>
+        </header>
+        <main className="flex-1 container mx-auto p-4">{children}</main>
+        <footer className="bg-blue-800 text-center p-2">
+          <p>&copy; 2024 Maintenance APP. All rights reserved.</p>
+        </footer>
+      </body>
     </html>
   );
 }

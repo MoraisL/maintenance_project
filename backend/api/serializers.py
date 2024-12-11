@@ -15,29 +15,38 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer): # Para customizar 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Machine
         fields = '__all__'
 
-class MaintenanceSerializer(serializers.ModelSerializer):
-    machine = MachineSerializer() # Nested serializer for related machine
-    user = UserSerializer()
-    formatted_date = serializers.CharField(source='formatted_date', read_only=True)
-
-    class Meta:
-        model = Maintenance
-        fields = '__all__'
-
-
 class TeamSerializer(serializers.ModelSerializer):
-    leader = UserSerializer()
+    # Usando PrimaryKeyRelatedField para aceitar apenas o id do líder e dos membros
+    leader = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    members = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
 
     class Meta:
         model = Team
-        fields = '__all__'
+        fields = ['id', 'name', 'leader', 'members']
+
+class MaintenanceSerializer(serializers.ModelSerializer):
+    # Modificando para incluir o primeiro nome e sobrenome do usuário
+    user = serializers.SerializerMethodField()
+    machine = MachineSerializer()
+    team = TeamSerializer()
+
+    formatted_date = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Maintenance
+        fields = ['id', 'machine', 'team', 'user', 'formatted_date', 'status', 'priority', 'description']
+
+    def get_user(self, obj):
+        # Retorna o nome completo do usuário (primeiro e sobrenome)
+        user = obj.user
+        return f"{user.username}" if user else None
 
 
 class PartSerializer(serializers.ModelSerializer):
