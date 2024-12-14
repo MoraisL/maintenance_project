@@ -63,7 +63,26 @@ class UsedPartViewSet(viewsets.ModelViewSet):
     serializer_class = UsedPartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+class PartViewSet(viewsets.ModelViewSet):
+    queryset = Part.objects.all()
+    serializer_class = PartSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    @action(detail=True, methods=['post'])
+    def adjust_quantity(self, request, pk=None):
+        part = self.get_object()
+        tipo = request.data.get('tipo')
+        quantidade = int(request.data.get('quantidade', 0))
+
+        if tipo == 'entrada':
+            part.adjust_stock(quantidade)
+        elif tipo == 'saida':
+            if part.qtd >= quantidade:
+                part.adjust_stock(-quantidade)
+            else:
+                return Response({"error": "Quantidade insuficiente"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Estoque atualizado com sucesso!"}, status=status.HTTP_200_OK)
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
