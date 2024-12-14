@@ -76,8 +76,18 @@ class UsedPart(models.Model):
     qtd = models.IntegerField()
     maintenance = models.ForeignKey(Maintenance, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.qtd} x {self.part.name} used in {self.maintenance}"
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Novo registro
+            self.part.adjust_stock(-self.qtd)
+        else:
+            old_qtd = UsedPart.objects.get(pk=self.pk).qtd
+            diff = old_qtd - self.qtd
+            self.part.adjust_stock(diff)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.part.adjust_stock(self.qtd)
+        super().delete(*args, **kwargs)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
