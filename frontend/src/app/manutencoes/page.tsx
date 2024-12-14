@@ -97,14 +97,26 @@ export default function MaintenancePage() {
   }, [router]);
 
   const handleAddMaintenance = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
     const token = localStorage.getItem("access_token");
     if (!token) {
       router.push("/login");
       return;
     }
-
-    e.preventDefault();
+  
+    const payload = {
+      machine: parseInt(formData.machine),
+      date: formData.date,
+      status: formData.status,
+      description: formData.description,
+      priority: formData.priority,
+      team: parseInt(formData.team),
+      user: parseInt(formData.user) || null,  // Opcional
+    };
+  
     setIsSubmitting(true);
+  
     try {
       const response = await fetch("http://127.0.0.1:8000/maintenances/", {
         method: "POST",
@@ -112,12 +124,14 @@ export default function MaintenancePage() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
-
+  
+      const data = await response.json();
+  
       if (response.ok) {
-        // Manutenção adicionada com sucesso
-        setShowModal(false); // Fecha o modal
+        setMaintenances([...maintenances, data]);
+        setShowModal(false);
         setFormData({
           machine: "",
           date: "",
@@ -127,19 +141,16 @@ export default function MaintenancePage() {
           team: "",
           user: "",
         });
-
-        // Atualiza a lista de manutenções
-        const updatedMaintenance = await response.json();
-        setMaintenances([...maintenances, updatedMaintenance]);
       } else {
-        console.error("Erro ao adicionar manutenção.");
+        console.error("Erro ao adicionar manutenção:", data);
       }
     } catch (error) {
-      console.error("Erro:", error);
+      console.error("Erro de conexão:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   if (loading) return <p>Carregando...</p>;
 

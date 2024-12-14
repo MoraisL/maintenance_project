@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Machine, Maintenance, Team, Part, UsedPart, Profile
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.utils.timezone import localtime
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer): # Para customizar o token (opcional)
     @classmethod
@@ -32,22 +33,36 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'leader', 'members']
 
 class MaintenanceSerializer(serializers.ModelSerializer):
-    # Modificando para incluir o primeiro nome e sobrenome do usuário
     user = serializers.SerializerMethodField()
-    machine = MachineSerializer()
-    team = TeamSerializer()
-
-    formatted_date = serializers.CharField(read_only=True)
+    machine = serializers.SerializerMethodField()
+    team = serializers.SerializerMethodField()
+    formatted_date = serializers.SerializerMethodField()
 
     class Meta:
         model = Maintenance
-        fields = ['id', 'machine', 'team', 'user', 'formatted_date', 'status', 'priority', 'description']
+        fields = ['id', 'machine', 'team', 'user', 'formatted_date', 'date', 'status', 'priority', 'description']
 
     def get_user(self, obj):
-        # Retorna o nome completo do usuário (primeiro e sobrenome)
-        user = obj.user
-        return f"{user.username}" if user else None
+        return f"{obj.user.username}" if obj.user else None
 
+    def get_machine(self, obj):
+        return {
+            "id": obj.machine.id,
+            "name": obj.machine.name,
+            "type": obj.machine.type,
+            "local": obj.machine.local,
+        }
+
+    def get_team(self, obj):
+        return {
+            "id": obj.team.id,
+            "name": obj.team.name,
+            "leader": obj.team.leader.username if obj.team.leader else None,
+        }
+
+    def get_formatted_date(self, obj):
+        # Formata a data no formato desejado
+        return localtime(obj.date).strftime('%d/%m/%Y %H:%M') if obj.date else "N/A"
 
 class PartSerializer(serializers.ModelSerializer):
     class Meta:
