@@ -75,17 +75,27 @@ export default function FormsCadastro() {
 
   const handleRegistroSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch("http://127.0.0.1:8000/usedparts/", {
+  
+    const response = await fetch(`http://127.0.0.1:8000/parts/${recordData.part}/adjust_quantity/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(recordData),
+      body: JSON.stringify({
+        tipo: recordData.tipo,
+        quantidade: recordData.quantidade,
+      }),
     });
-
+  
     if (response.ok) {
       setRecordData({ tipo: 'entrada', data: '', quantidade: 0, part: 0 });
+      const updatedPecas = await fetch("http://127.0.0.1:8000/parts/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => res.json());
+      setPecas(updatedPecas);
     } else {
       console.error("Erro ao registrar movimentação");
     }
