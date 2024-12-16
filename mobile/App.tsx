@@ -1,6 +1,5 @@
-
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, ScrollView, Button, TextInput, TouchableOpacity } from 'react-native';
@@ -9,7 +8,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MachineCard from './src/components/MachineCard';
 import MaintenanceModal from './src/components/MaintenanceModal';
 import RegisterParts from './src/components/RegisterParts';
-import PieceCard from './src/components/PieceCard';
 import Maintenance from './src/components/Maintenance';
 
 const Tab = createBottomTabNavigator();
@@ -18,9 +16,25 @@ function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username && password) {
-      navigation.replace('MainApp');
+      try {
+        const response = await fetch('https://127.0.0.1:8000/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          navigation.replace('MainApp');
+        } else {
+          alert('Login falhou. Tente novamente.');
+        }
+      } catch (error) {
+        console.error('Erro no login:', error);
+        alert('Erro ao conectar ao servidor.');
+      }
     } else {
       alert('Por favor, preencha os campos!');
     }
@@ -51,16 +65,35 @@ function LoginScreen({ navigation }) {
 }
 
 function MachinesScreen() {
+  const [machines, setMachines] = useState([]);
+
+  useEffect(() => {
+    const fetchMachines = async () => {
+      try {
+        const response = await fetch('https://127.0.0.1:8000/machines');
+        const data = await response.json();
+        setMachines(data);
+      } catch (error) {
+        console.error('Erro ao buscar máquinas:', error);
+      }
+    };
+
+    fetchMachines();
+  }, []);
+
   return (
     <ScrollView>
       <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, alignItems: 'center' }}>
         Gestão de máquinas
       </Text>
-      <MachineCard nome="Fresa" tipo="Industrial" localizacao="Oficina" />
-      <MachineCard nome="Máquina de Montagem" tipo="Manufatura" localizacao="Oficina" />
-      <MachineCard nome="Impressora" tipo="Escritório" localizacao="Oficina" />
-      <MachineCard nome="Cortadora a Laser" tipo="Industrial" localizacao="Fábrica" />
-      <MachineCard nome="Robô Colaborativo" tipo="Automação" localizacao="Linha de Produção" />
+      {machines.map((machine, index) => (
+        <MachineCard
+          key={index}
+          nome={machine.nome}
+          tipo={machine.tipo}
+          localizacao={machine.localizacao}
+        />
+      ))}
     </ScrollView>
   );
 }
@@ -69,9 +102,37 @@ function MaintenanceScreen() {
   const [maintenances, setMaintenances] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const addMaintenance = (newMaintenance) => {
-    setMaintenances([...maintenances, newMaintenance]);
-    setModalVisible(false);
+  const fetchMaintenances = async () => {
+    try {
+      const response = await fetch('https://127.0.0.1:8000/maintenances');
+      const data = await response.json();
+      setMaintenances(data);
+    } catch (error) {
+      console.error('Erro ao buscar manutenções:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMaintenances();
+  }, []);
+
+  const addMaintenance = async (newMaintenance) => {
+    try {
+      const response = await fetch('https://127.0.0.1:8000/maintenances', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newMaintenance),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setMaintenances([...maintenances, newMaintenance]);
+        setModalVisible(false);
+      } else {
+        alert('Erro ao adicionar manutenção');
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar manutenção:', error);
+    }
   };
 
   return (
