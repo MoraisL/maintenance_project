@@ -19,4 +19,5 @@ urlpatterns = [
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', views.RegisterUserView.as_view(), name='register_user'),
+    path('machines/<int:machine_id>/maintenances/', views.MaintenanceViewSet.as_view({'get': 'list'}), name='machine-maintenance-list'),
 ]
