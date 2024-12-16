@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet, Alert } from 'react-native';
 import PieceCard from './PieceCard'; // Importando o PieceCard
 
-// Estoque inicial
-const initialStock = [
-  { id: '1', name: 'Parafuso', quantity: 100 },
-  { id: '2', name: 'Porca', quantity: 50 },
-  { id: '3', name: 'Arruela', quantity: 200 },
-  { id: '4', name: 'Cabo', quantity: 30 },
-];
+// URL da API do backend
+const API_URL = 'http://seu-backend-url.com/api';
 
 const RegisterPartsScreen = () => {
   const [partName, setPartName] = useState('');
   const [quantityUsed, setQuantityUsed] = useState('');
   const [usedParts, setUsedParts] = useState([]);
-  const [stock, setStock] = useState(initialStock); // Armazena o estado do estoque
+  const [stock, setStock] = useState([]); // Armazena o estoque do servidor
 
-  const handleRegister = () => {
+  // Função para buscar o estoque atual do servidor
+  const fetchStock = async () => {
+    try {
+      const response = await fetch(`${API_URL}/stock`);
+      const data = await response.json();
+      setStock(data);
+    } catch (error) {
+      console.error('Erro ao carregar o estoque', error);
+      Alert.alert('Erro', 'Não foi possível carregar o estoque.');
+    }
+  };
+
+  // Função para registrar o uso de uma peça
+  const handleRegister = async () => {
     const quantityNum = parseInt(quantityUsed);
 
     if (partName && quantityUsed && !isNaN(quantityNum)) {
@@ -25,18 +33,32 @@ const RegisterPartsScreen = () => {
       // Verifica se a peça existe no estoque
       if (stockPart) {
         if (stockPart.quantity >= quantityNum) {
-          // Atualiza o estoque diminuindo a quantidade utilizada
-          const updatedStock = stock.map((item) =>
-            item.name.toLowerCase() === partName.toLowerCase()
-              ? { ...item, quantity: item.quantity - quantityNum }
-              : item
-          );
-          setStock(updatedStock);
+          try {
+            // Enviar dados para o backend
+            const response = await fetch(`${API_URL}/register`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                partName,
+                quantityUsed: quantityNum,
+              }),
+            });
 
-          // Adiciona a peça utilizada ao registro
-          setUsedParts([...usedParts, { id: Math.random().toString(), name: partName, quantity: quantityUsed }]);
-          setPartName('');
-          setQuantityUsed('');
+            if (response.ok) {
+              const updatedStock = await response.json(); // Recebe o estoque atualizado após o registro
+              setStock(updatedStock); // Atualiza o estoque na interface
+              setUsedParts([...usedParts, { id: Math.random().toString(), name: partName, quantity: quantityUsed }]);
+              setPartName('');
+              setQuantityUsed('');
+            } else {
+              Alert.alert('Erro', 'Falha ao registrar a peça.');
+            }
+          } catch (error) {
+            console.error('Erro ao registrar peça', error);
+            Alert.alert('Erro', 'Não foi possível registrar a peça.');
+          }
         } else {
           Alert.alert('Quantidade Insuficiente', 'A quantidade no estoque é menor do que a solicitada.');
         }
@@ -47,6 +69,11 @@ const RegisterPartsScreen = () => {
       Alert.alert('Erro', 'Por favor, preencha todos os campos corretamente.');
     }
   };
+
+  // Carregar estoque inicial quando o componente for montado
+  useEffect(() => {
+    fetchStock();
+  }, []);
 
   return (
     <View style={styles.container}>
