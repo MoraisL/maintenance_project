@@ -102,28 +102,28 @@ export default function FormsCadastro() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg text-black">
       <h2 className="text-xl font-bold mb-4">Cadastro de Peças</h2>
       <form onSubmit={handlePecaSubmit}>
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome:</label>
-          <input id="name" name="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="name" name="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <div className="mb-4">
           <label htmlFor="code" className="block text-sm font-medium text-gray-700">Código:</label>
-          <input id="code" name="code" value={formData.code} onChange={(e) => setFormData({ ...formData, code: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="code" name="code" value={formData.code} onChange={(e) => setFormData({ ...formData, code: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <div className="mb-4">
           <label htmlFor="supplier" className="block text-sm font-medium text-gray-700">Fornecedor:</label>
-          <input id="supplier" name="supplier" value={formData.supplier} onChange={(e) => setFormData({ ...formData, supplier: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="supplier" name="supplier" value={formData.supplier} onChange={(e) => setFormData({ ...formData, supplier: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <div className="mb-4">
           <label htmlFor="qtd" className="block text-sm font-medium text-gray-700">Quantidade em estoque:</label>
-          <input id="qtd" name="qtd" type="number" value={formData.qtd} onChange={(e) => setFormData({ ...formData, qtd: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="qtd" name="qtd" type="number" value={formData.qtd} onChange={(e) => setFormData({ ...formData, qtd: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <div className="mb-4">
           <label htmlFor="cost" className="block text-sm font-medium text-gray-700">Valor unitário:</label>
-          <input id="cost" name="cost" type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="cost" name="cost" type="number" step="0.01" value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <button type="submit" className="w-full py-2 px-4 bg-pink-800 text-white font-semibold rounded-md">Cadastrar Peça</button>
       </form>
@@ -132,7 +132,7 @@ export default function FormsCadastro() {
       <form onSubmit={handleRegistroSubmit}>
         <div className="mb-4">
           <label htmlFor="part" className="block text-sm font-medium text-gray-700">Peça:</label>
-          <select id="part" name="part" value={recordData.part} onChange={(e) => setRecordData({ ...recordData, part: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md">
+          <select id="part" name="part" value={recordData.part} onChange={(e) => setRecordData({ ...recordData, part: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black">
             <option value={0}>Selecione uma peça</option>
             {pecas.map((peca) => (
               <option key={peca.id} value={peca.id}>{peca.name}</option>
@@ -141,18 +141,18 @@ export default function FormsCadastro() {
         </div>
         <div className="mb-4">
           <label htmlFor="tipo" className="block text-sm font-medium text-gray-700">Tipo de Registro:</label>
-          <select id="tipo" name="tipo" value={recordData.tipo} onChange={(e) => setRecordData({ ...recordData, tipo: e.target.value as 'entrada' | 'saida' })} required className="mt-1 block w-full px-3 py-2 border rounded-md">
+          <select id="tipo" name="tipo" value={recordData.tipo} onChange={(e) => setRecordData({ ...recordData, tipo: e.target.value as 'entrada' | 'saida' })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black">
             <option value="entrada">Entrada</option>
             <option value="saida">Saída</option>
           </select>
         </div>
         <div className="mb-4">
           <label htmlFor="data" className="block text-sm font-medium text-gray-700">Data:</label>
-          <input id="data" name="data" type="date" value={recordData.data} onChange={(e) => setRecordData({ ...recordData, data: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="data" name="data" type="date" value={recordData.data} onChange={(e) => setRecordData({ ...recordData, data: e.target.value })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <div className="mb-4">
           <label htmlFor="quantidade" className="block text-sm font-medium text-gray-700">Quantidade:</label>
-          <input id="quantidade" name="quantidade" type="number" value={recordData.quantidade} onChange={(e) => setRecordData({ ...recordData, quantidade: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md" />
+          <input id="quantidade" name="quantidade" type="number" value={recordData.quantidade} onChange={(e) => setRecordData({ ...recordData, quantidade: Number(e.target.value) })} required className="mt-1 block w-full px-3 py-2 border rounded-md text-black" />
         </div>
         <button type="submit" className="w-full py-2 px-4 bg-pink-800 text-white font-semibold rounded-md">Registrar</button>
       </form>

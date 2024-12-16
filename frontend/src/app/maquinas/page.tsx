@@ -9,6 +9,7 @@ export default function MachinesPage() {
   const [showModal, setShowModal] = useState<boolean>(false);  // Estado para o modal
   const [showDetailModal, setShowDetailModal] = useState<boolean>(false); // Estado para o modal de detalhes
   const [selectedMachine, setSelectedMachine] = useState<any | null>(null); // Estado para a máquina selecionada
+  const [machineMaintenances, setMachineMaintenances] = useState<any[]>([]); // Manutenções da máquina
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -20,6 +21,7 @@ export default function MachinesPage() {
 
   const router = useRouter();
 
+  // Carregar máquinas na página inicial
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -46,6 +48,32 @@ export default function MachinesPage() {
         setLoading(false);
       });
   }, [router]);
+
+  useEffect(() => {
+    if (selectedMachine) {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        // Certifique-se de que está acessando a URL correta com o ID da máquina
+        fetch(`http://127.0.0.1:8000/machines/${selectedMachine.id}/maintenances/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (Array.isArray(data)) {
+              setMachineMaintenances(data);  // Atualiza o estado com as manutenções filtradas
+            } else {
+              console.error("A resposta das manutenções não é um array", data);
+              setMachineMaintenances([]);
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar manutenções:", error);
+            setMachineMaintenances([]);
+          });
+      }
+    }
+  }, [selectedMachine]);
+  
 
   const handleAddMachine = async (e: React.FormEvent) => {
     const token = localStorage.getItem("access_token");
@@ -86,10 +114,20 @@ export default function MachinesPage() {
     }
   };
 
+  // Exibir detalhes da máquina quando clicada
   const handleMachineClick = (machine: any) => {
     setSelectedMachine(machine); // Armazena a máquina selecionada
     setShowDetailModal(true); // Exibe o modal de detalhes
   };
+
+  // Fechar modal de detalhes
+  const closeDetailModal = () => {
+    setShowDetailModal(false);
+    setSelectedMachine(null); // Limpa a máquina selecionada quando o modal for fechado
+  };
+
+  // Fechar modal de adicionar máquina
+  const closeAddMachineModal = () => setShowModal(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -156,13 +194,11 @@ export default function MachinesPage() {
           </tbody>
         </table>
 
-
-
         {/* Modal de adicionar máquina */}
         {showModal && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-black"
-            onClick={() => setShowModal(false)} // Fecha o modal ao clicar fora
+            onClick={closeAddMachineModal} // Fecha o modal ao clicar fora
           >
             <div
               className="bg-gray-50 rounded-lg shadow-lg p-6 w-1/3 text-black"
@@ -252,7 +288,7 @@ export default function MachinesPage() {
         {showDetailModal && selectedMachine && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-black"
-            onClick={() => setShowDetailModal(false)} // Fecha o modal ao clicar fora
+            onClick={closeDetailModal} // Fecha o modal ao clicar fora
           >
             <div
               className="bg-gray-50 rounded-lg shadow-lg p-6 w-1/3 text-black"
@@ -265,9 +301,22 @@ export default function MachinesPage() {
                 <p><strong>Local:</strong> {selectedMachine.local}</p>
                 <p><strong>Data de Fabricação:</strong> {new Date(selectedMachine.fab_date).toLocaleDateString()}</p>
                 <p><strong>Número de Série:</strong> {selectedMachine.serial_number}</p>
+
+                <h3 className="mt-4 text-lg font-semibold">Manutenções:</h3>
+                <ul>
+                  {machineMaintenances.length > 0 ? (
+                    machineMaintenances.map((maintenance) => (
+                      <li key={maintenance.id}>
+                        {maintenance.formatted_date} - {maintenance.status}
+                      </li>
+                    ))
+                  ) : (
+                    <p>Nenhuma manutenção encontrada</p>
+                  )}
+                </ul>
               </div>
               <button
-                onClick={() => setShowDetailModal(false)}
+                onClick={closeDetailModal}
                 className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
               >
                 Fechar
