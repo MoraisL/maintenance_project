@@ -12,7 +12,7 @@ const MachineCard = ({ nome, tipo, localizacao, id }) => {
   // Carregar relatórios de manutenção quando o modal de relatórios for aberto
   const fetchMaintenanceReports = async () => {
     try {
-      const response = await fetch(`https://127.0.0.1/machines/${id}/maintenances`);
+      const response = await fetch(`https://127.0.0.1:8000/machines/${id}/maintenances`);
       const data = await response.json();
       setMaintenanceReports(data);
     } catch (error) {
@@ -23,7 +23,7 @@ const MachineCard = ({ nome, tipo, localizacao, id }) => {
   const handleMaintenanceSwitch = async (value) => {
     setInMaintenance(value);
     try {
-      const response = await fetch(`https://127.0.0.1/machines/${id}/maintenance`, {
+      const response = await fetch(`https://127.0.0.1:8000/machines/${id}/maintenance`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inMaintenance: value }),
@@ -41,7 +41,7 @@ const MachineCard = ({ nome, tipo, localizacao, id }) => {
 
   const handleCommentChange = async () => {
     try {
-      const response = await fetch(`https://127.0.0.1/machines/${id}/`, {
+      const response = await fetch(`https://127.0.0.1:8000/machines/${id}/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comment }),
