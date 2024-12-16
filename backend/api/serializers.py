@@ -78,8 +78,6 @@ class PartSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class MachineSerializer(serializers.ModelSerializer):
-    history = MaintenanceSerializer(many=True)  # Adiciona a lista de manutenções associadas à máquina
-
     class Meta:
         model = Machine
         fields = '__all__'
