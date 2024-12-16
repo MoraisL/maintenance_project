@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -28,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+APPEND_SLASH=False
 
 # Application definition
 
@@ -144,4 +146,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365 * 100),  # Token expira em 100 anos
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=365 * 100),  # Refresh token também expira em 100 anos
+    'ROTATE_REFRESH_TOKENS': True,  # Habilita a rotação de refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,  # Habilita blacklist de refresh tokens
+    'UPDATE_LAST_LOGIN': True,  # Atualiza a última data de login
 }
