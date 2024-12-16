@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, FlatList, StyleSheet, Alert } from 'reac
 import PieceCard from './PieceCard'; // Importando o PieceCard
 
 // URL da API do backend
-const API_URL = 'http://seu-backend-url.com/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 const RegisterPartsScreen = () => {
   const [partName, setPartName] = useState('');
