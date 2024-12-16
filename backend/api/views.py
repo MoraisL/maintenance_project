@@ -39,10 +39,26 @@ class MachineViewSet(viewsets.ModelViewSet):
 class MaintenanceViewSet(viewsets.ModelViewSet):
     queryset = Maintenance.objects.all()
     serializer_class = MaintenanceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Recuperando o ID da máquina diretamente da URL (capturado no path da URL)
+        machine_id = self.kwargs.get('machine_id')
+
+        # Verificando se o ID da máquina foi fornecido na URL
+        if machine_id:
+            # Filtra as manutenções para a máquina selecionada
+            queryset = Maintenance.objects.filter(machine_id=machine_id)
+        else:
+            queryset = Maintenance.objects.all()
+
+        return queryset
 
     def perform_create(self, serializer):
-        # Certifique-se de que o campo 'user' seja passado corretamente ao criar a instância
-        serializer.save(user=self.request.user)  # Usando o usuário autenticado como responsável
+        # Salva a manutenção com o usuário autenticado como responsável
+        serializer.save(user=self.request.user)
+
+
 
 
 
