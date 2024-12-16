@@ -1,12 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Modal, TextInput, Switch, StyleSheet } from 'react-native';
 import MaintenanceCard from './MaintenanceCard'; // Assumindo que o MaintenanceCard está nesse caminho
 
-const MachineCard = ({ nome, tipo, localizacao }) => {
+const MachineCard = ({ nome, tipo, localizacao, id }) => {
   const [inMaintenance, setInMaintenance] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [comment, setComment] = useState('');
+  const [maintenanceReports, setMaintenanceReports] = useState([]);
+
+  // Carregar relatórios de manutenção quando o modal de relatórios for aberto
+  const fetchMaintenanceReports = async () => {
+    try {
+      const response = await fetch(`https://127.0.0.1/machines/${id}/maintenances`);
+      const data = await response.json();
+      setMaintenanceReports(data);
+    } catch (error) {
+      console.error('Erro ao buscar relatórios de manutenção:', error);
+    }
+  };
+
+  const handleMaintenanceSwitch = async (value) => {
+    setInMaintenance(value);
+    try {
+      const response = await fetch(`https://127.0.0.1/machines/${id}/maintenance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inMaintenance: value }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert('Status de manutenção atualizado!');
+      } else {
+        alert('Erro ao atualizar status de manutenção.');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar status de manutenção:', error);
+    }
+  };
+
+  const handleCommentChange = async () => {
+    try {
+      const response = await fetch(`https://127.0.0.1/machines/${id}/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ comment }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert('Comentário salvo!');
+      } else {
+        alert('Erro ao salvar comentário.');
+      }
+    } catch (error) {
+      console.error('Erro ao salvar comentário:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -22,13 +71,14 @@ const MachineCard = ({ nome, tipo, localizacao }) => {
           placeholder="Digite seu comentário"
           style={styles.input}
         />
+        <Button title="Salvar Comentário" onPress={handleCommentChange} color="#4a6572" />
       </View>
 
       <View style={styles.switchContainer}>
         <Text style={styles.label}>Em Manutenção</Text>
         <Switch
           value={inMaintenance}
-          onValueChange={setInMaintenance}
+          onValueChange={handleMaintenanceSwitch}
         />
       </View>
 
@@ -62,6 +112,7 @@ const MachineCard = ({ nome, tipo, localizacao }) => {
               color="#9BB7BD"
               onPress={() => {
                 setModalVisible(false);
+                fetchMaintenanceReports();
                 setReportModalVisible(true);
               }}
             />
@@ -82,21 +133,14 @@ const MachineCard = ({ nome, tipo, localizacao }) => {
           <Text style={styles.modalTitle}>Relatório de Manutenções</Text>
 
           {/* Exemplo de três MaintenanceCard */}
-          <MaintenanceCard
-            description="Substituição da correia transportadora"
-            date="20/09/2024"
-            status="Finalizada"
-          />
-          <MaintenanceCard
-            description="Revisão do motor"
-            date="22/09/2024"
-            status="Em andamento"
-          />
-          <MaintenanceCard
-            description="Verificação dos sensores"
-            date="18/09/2024"
-            status="Finalizada"
-          />
+          {maintenanceReports.map((report, index) => (
+            <MaintenanceCard
+              key={index}
+              description={report.description}
+              date={report.date}
+              status={report.status}
+            />
+          ))}
 
           <Button color="#b4b4b4" title="Fechar" onPress={() => setReportModalVisible(false)} />
         </View>
@@ -112,7 +156,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#9BB7BD',
     borderRadius: 10,
     margin: 10,
-    fontSize: 22,
   },
   label: {
     fontSize: 16,
@@ -162,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MachineCard
+export default MachineCard;
